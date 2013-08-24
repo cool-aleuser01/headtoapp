@@ -122,53 +122,22 @@ end
 
 # define object places to retrieve data from foursquare
 get "/object/:location_id" do
-  client = Foursquare2::Client.new(:client_id => ENV['FS_ID'], :client_secret => ENV['FS_SECRET'])
 
-  @location = client.venue(params[:location_id]); #this is the Matteo cafe for now. will be changed
+  client = Foursquare2::Client.new(:client_id => ENV['FS_ID'], :client_secret => ENV['FS_SECRET'])
+  @location = client.venue(params[:location_id]); 
   
   erb :location
 end
 
-# get "/postObject" do
-#   client = Foursquare2::Client.new(:client_id => ENV['FS_ID'], :client_secret => ENV['FS_SECRET'])
-
-#   @location = client.venue("4b65b46ff964a520acfa2ae3"); #this is the Matteo cafe for now. will be changed
-
-#   @graph  = Koala::Facebook::API.new(access_token)
-#   # @graph.put_connections("me", "feed", :message => "HelloWorld") this is working
-#   @response = @graph.put_object("me", "headtoapp:location", :object =>
-#     '{ app_id: 479332218823511,' +
-#     'type: "headtoapp:venue",' +
-#     'url: "https://head-to.herokuapp.com/object",'+
-#     'title: ' + @location.name + ','+
-#     'image: ' + @location.name + ','+
-#     'location: { latitude: "'+@location.location.lat.to_s+'", longitude:"'+ @location.location.lng.to_s+'" },'+
-#     'description: ' + @location.name + '}'
-#   )
-#   # @response = @graph.put_connections("me", "objects/headtoapp:location", :object=>"https://head-to.herokuapp.com/object")
-#   erb :index
-
-# end
-
 get "/postAction/:location_id" do
 
   begin
-    # hit_object_to_cache(object_url)
-    # client = Foursquare2::Client.new(:client_id => ENV['FS_ID'], :client_secret => ENV['FS_SECRET'])
-
-    # @location = client.venue(params[:location_id])
-    # @response_obj = @graph.put_connections("me", "objects/headtoapp:venue", 
-    #   :object => '{ "app_id": "479332218823511",' +
-    #     '"type": "headtoapp:venue",' +
-    #     '"url": "'+ object_url + '",'+
-    #     '"title": "' + @location.name + '",'+
-    #     '"image": "' + @location.photos.groups[1].items[0].url + '",'+
-    #     '"description": "' + @location.name + '"}')
     @graph  = Koala::Facebook::API.new(access_token)
-    object_url = "https://head-to.herokuapp.com/object/"+params[:location_id]
+    object_url = "https://headtoapp.herokuapp.com/object/" + params[:location_id]
     response = @graph.put_connections("me", "headtoapp:head_to", 
       :venue => object_url,
-      :end_time => (Time.now + 2*3600).iso8601 )
+      :expires_in => 4*60*60 )
+#      :end_time => (Time.now + 2*3600).iso8601 )
     redirect "/"
   rescue => @e
     erb :exception
