@@ -29,7 +29,7 @@ end
 before do
   # HTTPS redirect
   if settings.environment == :production && request.scheme != 'https'
-    redirect "https://#{request.env['HTTP_HOST']}"
+    redirect "http://#{request.env['HTTP_HOST']}"
   end
 end
 
@@ -67,7 +67,7 @@ helpers do
 
   def hit_object_to_cache(object)
 
-    url = URI.parse('https://developers.facebook.com/tools/debug/og/object')
+    url = URI.parse('http://developers.facebook.com/tools/debug/og/object')
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -133,7 +133,7 @@ get "/postAction/:location_id" do
 
   begin
     @graph  = Koala::Facebook::API.new(access_token)
-    object_url = "https://headtoapp.herokuapp.com/object/" + params[:location_id]
+    object_url = "http://headtoapp.herokuapp.com/object/" + params[:location_id]
     response = @graph.put_connections("me", "headtoapp:head_to", 
       :venue => object_url,
       :expires_in => 4*60*60 )

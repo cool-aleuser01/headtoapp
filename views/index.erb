@@ -52,7 +52,7 @@ function hitFoursquareAPI(query) {
             post_location = venue.canonicalUrl;
             insert_string += "<tr>";
             
-            insert_string += "<td><img src='http://maps.googleapis.com/maps/api/staticmap?center=";
+            insert_string += "<td><img src='//maps.googleapis.com/maps/api/staticmap?center=";
             insert_string += venue.location.lat + "," + venue.location.lng;
             insert_string += "&markers=color:blue%7C" + venue.location.lat + "," + venue.location.lng;
             insert_string += "&zoom=15&size=300x100&sensor=false'></td>";
