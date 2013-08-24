@@ -26,12 +26,12 @@ unless ENV["FS_ID"] && ENV["FS_SECRET"]
   abort("missing env vars: please set FS_ID and FS_SECRET with your app credentials")
 end
 
-before do
-  # HTTPS redirect
-  if settings.environment == :production && request.scheme != 'https'
-    redirect "http://#{request.env['HTTP_HOST']}"
-  end
-end
+#before do
+#  # HTTPS redirect
+#  if settings.environment == :production && request.scheme != 'https'
+#    redirect "https://#{request.env['HTTP_HOST']}"
+#  end
+#end
 
 helpers do
   def host
