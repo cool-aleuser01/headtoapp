@@ -11,8 +11,14 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+Gemfile.lock
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+
+.env
+log/
+.rvmrc
+.DS_Store
