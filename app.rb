@@ -94,13 +94,14 @@ get "/object/:location_id" do
 end
 
 get "/postAction/:location_id" do
+  warn params[:access_token]
   begin
-    @graph  = Koala::Facebook::API.new(access_token)
+    @graph  = Koala::Facebook::API.new(params[:access_token])
     object_url = "http://headtoapp.herokuapp.com/object/" + params[:location_id]
     response = @graph.put_connections("me", "headtoapp:head_to", 
       :venue => object_url,
       :expires_in => 4*60*60 )
-#      :end_time => (Time.now + 2*3600).iso8601 )
+      #:end_time => (Time.now + 2*3600).iso8601 )
     redirect "/"
   rescue => @e
     erb :exception

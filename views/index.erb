@@ -1,81 +1,132 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
 
-<title>Headto: Tell your friends where you are heading</title>
+  <title>Headto: Tell your friends where you are heading</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Tell your friends where you are heading.">
-<meta name="keywords" content="ip, ip address, geolocation, hostname, my ip, address, ip geo">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tell your friends where you are heading.">
+  <meta name="keywords" content="ip, ip address, geolocation, hostname, my ip, address, ip geo">
 
-<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-<link href="stylesheets/headto.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="stylesheets/headto.css" rel="stylesheet">
 
-<script type="application/javascript" src="javascripts/microajax.js"></script>
+  <script type="application/javascript" src="javascripts/microajax.js"></script>
+  <script type="application/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
 
-<script type="application/javascript">
+  <script type="application/javascript">
 
-var my_coord = "";
-var venue_results;
+  var my_coord = "";
+  var venue_results;
 
-function getIP(res) {
+  function getIP(res) {
     my_coord = res.loc;
-    //document.getElementById("my_location").innerHTML = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=" + my_coord + "&zoom=15&size=640x200&sensor=false'></img>"
+//document.getElementById("my_location").innerHTML = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=" + my_coord + "&zoom=15&size=640x200&sensor=false'></img>"
 }        
 
 function category(objectty) {
-    if(objectty.length)
-        return objectty[0].name;
-    else
-        return "";
+  if(objectty.length)
+    return objectty[0].name;
+  else
+    return "";
 }
 function hitFoursquareAPI(query) {
 
-    var locationParameter;
-    if (my_coord == "") {
-        locationParameter = "intent=global";
-    } else {
-        locationParameter = "ll=" + my_coord;
-    };
-            
-    microAjax("https://api.foursquare.com/v2/venues/search?" +
-        "client_id=EBA5MTZIPRVHNGKU2RB4KZ45J2BAOZFSYIXHGYBGR1KIXFIQ&"+
-        "client_secret=K0CBX5TQKHNEB35MGT3NNIVLWP0C4L0CQQ4UP3C2LUSLQL0W&"+
-        "query=" + query + "&"+
-        "v=20130725&"+
-        "limit=5&" + locationParameter, function (res) {
-            venue_results = eval ("(" + res + ")");
-            var insert_string = "<table class='table table-striped'>";
-            venue_results.response.venues.forEach( function(venue) {
-                   
-            post_location = venue.canonicalUrl;
-            insert_string += "<tr>";
-            
-            insert_string += "<td><img src='//maps.googleapis.com/maps/api/staticmap?center=";
-            insert_string += venue.location.lat + "," + venue.location.lng;
-            insert_string += "&markers=color:blue%7C" + venue.location.lat + "," + venue.location.lng;
-            insert_string += "&zoom=15&size=300x100&sensor=false'></td>";
-            
-            insert_string += "<td><b><a href='" + venue.canonicalUrl + "'>" + venue.name;
-            insert_string += "</a></b><br>" + category(venue.categories) + "<br>";
-            insert_string += venue.location.address + ", " + venue.location.city + ".";
-      
-            insert_string += "<br><br><br>" + "<form action='postAction/" + venue.id + "' method=get> <input type=submit value='Tell your friends'></form>" + "</td>";
+  var locationParameter;
+  if (my_coord == "") {
+    locationParameter = "intent=global";
+  } else {
+    locationParameter = "ll=" + my_coord;
+  };
 
-            insert_string += "</tr>";                 
-        });
-        insert_string += "</table>";
-        document.getElementById("result").innerHTML = insert_string;
+  microAjax("https://api.foursquare.com/v2/venues/search?" +
+    "client_id=EBA5MTZIPRVHNGKU2RB4KZ45J2BAOZFSYIXHGYBGR1KIXFIQ&"+
+    "client_secret=K0CBX5TQKHNEB35MGT3NNIVLWP0C4L0CQQ4UP3C2LUSLQL0W&"+
+    "query=" + query + "&"+
+    "v=20130725&"+
+    "limit=5&" + locationParameter, function (res) {
+      venue_results = eval ("(" + res + ")");
+      var insert_string = "<table class='table table-striped'>";
+      venue_results.response.venues.forEach( function(venue) {
+
+        post_location = venue.canonicalUrl;
+        insert_string += "<tr>";
+
+        insert_string += "<td><img src='//maps.googleapis.com/maps/api/staticmap?center=";
+        insert_string += venue.location.lat + "," + venue.location.lng;
+        insert_string += "&markers=color:blue%7C" + venue.location.lat + "," + venue.location.lng;
+        insert_string += "&zoom=15&size=300x100&sensor=false'></td>";
+
+        insert_string += "<td><b><a href='" + venue.canonicalUrl + "'>" + venue.name;
+        insert_string += "</a></b><br>" + category(venue.categories) + "<br>";
+        insert_string += venue.location.address + ", " + venue.location.city + ".";
+
+        insert_string += "<br><br><br>" + "<form action='postAction/" + venue.id + "' method='get'> <input type='button' onclick='postToFB(this);' value='Tell your friends'></form>" + "</td>";
+
+        insert_string += "</tr>";                 
+      });
+      insert_string += "</table>";
+      document.getElementById("result").innerHTML = insert_string;
     });
 }
 
 </script>
 <script>
 
+function postToFB(element) {
+  console.log("its reaching here for sure");
+  FB.getLoginStatus( function(response) {
+    if (response.status === 'connected') {
+      // the user is logged in and has authenticated your
+      // app, and response.authResponse supplies
+      // the user's ID, a valid access token, a signed
+      // request, and the time the access token 
+      // and signed request each expire
+      console.log("already authenticated");
+      var uid = response.authResponse.userID;
+      var accessToken = response.authResponse.accessToken;
+      // createGraphObject(num);
+      console.log(accessToken);
 
-function postToFB(location_id) {
-
+      $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
+      element.parentNode.submit();
+    } else if (response.status === 'not_authorized') {
+      // the user is logged in to Facebook, 
+      // but has not authenticated your app
+      FB.login( function(response) {
+        if (response.authResponse) {
+          console.log('Welcome!  Fetching your information.... ');
+          FB.api('/me', function(response) {
+            console.log('Good to see you, ' + response.name + '.');
+          });
+        // createGraphObject(num);
+        var accessToken = response.authResponse.accessToken;
+        $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
+        element.parentNode.submit();
+        } else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+      }, { scope: 'email, publish_actions' });
+    } else {
+      console.log("I am here as well");
+      // the user isn't logged in to Facebook.
+      FB.login(function(response) {
+        if (response.authResponse) {
+          console.log('Welcome!  Fetching your information.... ');
+          FB.api('/me', function(response) {
+            console.log('Good to see you, ' + response.name + '.');
+            // createGraphObject(num);
+            var accessToken = response.authResponse.accessToken;
+            $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
+            element.parentNode.submit();
+          });
+        } else {
+          console.log('User cancelled login or did not fully authorize.');
+        }
+      }, {scope: 'email, publish_actions'});
+    }
+  });
 }
 
 </script>
@@ -83,68 +134,65 @@ function postToFB(location_id) {
 </head>
 <body>
 
-<div id="fb-root"></div>
-<script type="text/javascript">
-
+  <div id="fb-root"></div>
+  <script type="text/javascript">
+  // initialize FB object
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : 479332218823511,        // App ID
-      status     : true,           // check login status
-      cookie     : true,           // enable cookies to allow the server to access the session
-      xfbml      : false            // parse page for xfbml or html5 social plugins like login button below
+      appId      : 479332218823511,                         // App ID
+      channelUrl : "<%= url_no_scheme('/channel.html') %>", // Channel File
+      status     : true,                                    // check login status
+      cookie     : true,                                    // enable cookies to allow the server to access the session
+      xfbml      : true                                     // parse XFBML
     });
   };
 
   (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/all.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
 
-</script>
+  </script>
 
-<div
-  class="fb-login-button"
-  data-show-faces="true"
-  data-width="200"
-  data-max-rows="1"
-  data-scope="publish_actions">
-</div>
+  <!-- <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="publish_actions">
+  </div> -->
 
-<div id="result-fb"></div>
+  <div id="result-fb"></div>
 
-<div class="container-narrow">
+  <div class="container-narrow">
 
     <div class="masthead">
-        <div class="pull-right">
-            <br><p class="muted">Tell your friends where you are heading.</p>
-        </div>
-        <h1 class="muted">&#10548; Headto</h1>
+      <div class="pull-right">
+        <br><p class="muted">Tell your friends where you are heading.</p>
+      </div>
+      <h1 class="muted">&#10548; Headto</h1>
     </div>
     <hr>
 
 
     <div class="jumbotron">
-        <br>
-        <input type="text" name="query" placeholder="Where are you heading today?" style="font-size: 1.5em; height: 20px; width: 60%; padding: 10px;" onkeyup="hitFoursquareAPI(this.value);" autocomplete="off"/>
-        <br><br>
+      <br>
+      <input type="text" name="query" placeholder="Where are you heading today?" style="font-size: 1.5em; height: 20px; width: 60%; padding: 10px;" onkeyup="hitFoursquareAPI(this.value);" autocomplete="off"/>
+      <br><br>
 
-        <div id="my_location" style="position: relative"></div>
-        <span id="result"></span>
-      
+      <div id="my_location" style="position: relative"></div>
+      <span id="result"></span>
+
     </div>
 
     <div class="footer">
-        <hr/>
-        <p class="muted pull-right">&#10548; Headto</p>
-        <p class="muted">Get the <a href="http://github.com/paramaggarwal/headto">code</a>.
-        Location data by <a href="http://foursquare.com">Foursquare</a>.</p>
+      <hr/>
+      <p class="muted pull-right">&#10548; Headto</p>
+      <p class="muted">
+        Get the <a href="http://github.com/paramaggarwal/headto">code</a>.
+        Location data by <a href="http://foursquare.com">Foursquare</a>.
+      </p>
     </div>
 
-</div>
-<script type="application/javascript" src="//ipinfo.io/?callback=getIP"></script>
-
+  </div>
+  <script type="application/javascript" src="//ipinfo.io/?callback=getIP"></script>
+</body>
 </html>
-
