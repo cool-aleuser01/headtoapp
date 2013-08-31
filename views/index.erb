@@ -100,10 +100,10 @@ function postToFB(element) {
           FB.api('/me', function(response) {
             console.log('Good to see you, ' + response.name + '.');
           });
-        // createGraphObject(num);
-        var accessToken = response.authResponse.accessToken;
-        $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
-        element.parentNode.submit();
+          // createGraphObject(num);
+          var accessToken = response.authResponse.accessToken;
+          $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
+          element.parentNode.submit();
         } else {
           console.log('User cancelled login or did not fully authorize.');
         }
@@ -117,10 +117,11 @@ function postToFB(element) {
           FB.api('/me', function(response) {
             console.log('Good to see you, ' + response.name + '.');
             // createGraphObject(num);
-            var accessToken = response.authResponse.accessToken;
-            $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
-            element.parentNode.submit();
           });
+
+          var accessToken = response.authResponse.accessToken;
+          $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
+          element.parentNode.submit();
         } else {
           console.log('User cancelled login or did not fully authorize.');
         }
