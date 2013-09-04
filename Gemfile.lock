@@ -40,8 +40,8 @@ PLATFORMS
 DEPENDENCIES
   foursquare2
   httparty
-  json (= 1.5.5)
+  json
   koala
-  rack (= 1.5.2)
+  rack
   sinatra
   unicorn

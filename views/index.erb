@@ -1,29 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+<meta charset="utf-8">
 
-  <title>Headto: Tell your friends where you are heading</title>
+<title>Headto: Tell your friends where you are heading</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Tell your friends where you are heading.">
-  <meta name="keywords" content="ip, ip address, geolocation, hostname, my ip, address, ip geo">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tell your friends where you are heading.">
+<meta name="keywords" content="ip, ip address, geolocation, hostname, my ip, address, ip geo">
 
-  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-  <link href="stylesheets/headto.css" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link href="stylesheets/headto.css" rel="stylesheet">
 
-  <script type="application/javascript" src="javascripts/microajax.js"></script>
-  <script type="application/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
+<script type="application/javascript" src="javascripts/microajax.js"></script>
+<script type="application/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
 
-  <script type="application/javascript">
+<script type="application/javascript">
 
-  var my_coord = "";
-  var venue_results;
+var my_coord = "";
+var venue_results;
 
-  function getIP(res) {
+function getIP(res) {
     my_coord = res.loc;
-//document.getElementById("my_location").innerHTML = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=" + my_coord + "&zoom=15&size=640x200&sensor=false'></img>"
-}        
+    //document.getElementById("my_location").innerHTML = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=" + my_coord + "&zoom=15&size=640x200&sensor=false'></img>"
+}
 
 function category(objectty) {
   if(objectty.length)
@@ -62,9 +62,11 @@ function hitFoursquareAPI(query) {
         insert_string += "</a></b><br>" + category(venue.categories) + "<br>";
         insert_string += venue.location.address + ", " + venue.location.city + ".";
 
-        insert_string += "<br><br><br>" + "<form action='postAction/" + venue.id + "' method='get'> <input type='button' onclick='postToFB(this);' value='Tell your friends'></form>" + "</td>";
+        insert_string += "<br><br><br>";
 
-        insert_string += "</tr>";                 
+        insert_string += showFBLoginButton(venue.id);
+
+        insert_string += "</td></tr>";                 
       });
       insert_string += "</table>";
       document.getElementById("result").innerHTML = insert_string;
@@ -74,62 +76,48 @@ function hitFoursquareAPI(query) {
 </script>
 <script>
 
-function postToFB(element) {
-  console.log("its reaching here for sure");
+
+
+function showFBLoginButton(venue_id) {
+
+  var button_string = "";
+
   FB.getLoginStatus( function(response) {
     if (response.status === 'connected') {
-      // the user is logged in and has authenticated your
-      // app, and response.authResponse supplies
-      // the user's ID, a valid access token, a signed
-      // request, and the time the access token 
-      // and signed request each expire
-      console.log("already authenticated");
+      console.log("User is already authenticated.");
+
       var uid = response.authResponse.userID;
       var accessToken = response.authResponse.accessToken;
-      // createGraphObject(num);
-      console.log(accessToken);
+      console.log("Got token: " + accessToken);
 
-      $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
-      element.parentNode.submit();
+      button_string = "<form action='postAction/" + venue_id + "' method='get'><input type='submit' value='Tell your friends'></form>";
+      
     } else if (response.status === 'not_authorized') {
-      // the user is logged in to Facebook, 
-      // but has not authenticated your app
-      FB.login( function(response) {
-        if (response.authResponse) {
-          console.log('Welcome!  Fetching your information.... ');
-          FB.api('/me', function(response) {
-            console.log('Good to see you, ' + response.name + '.');
-          });
-          // createGraphObject(num);
-          var accessToken = response.authResponse.accessToken;
-          $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
-          element.parentNode.submit();
-        } else {
-          console.log('User cancelled login or did not fully authorize.');
-        }
-      }, { scope: 'email, publish_actions' });
+      console.log("User is logged in, but not authorized.");
+      button_string = "<input type='button' onclick='loginToFB();' value='Allow us to tell your Facebook friends!' />";
+      
     } else {
-      console.log("I am here as well");
-      // the user isn't logged in to Facebook.
-      FB.login(function(response) {
+      console.log("User is not logged in...");
+      button_string = "<input type='button' onclick='loginToFB();' value='Login to Facebook and tell your friends!' />";
+      
+    }
+  });
+
+  return button_string;
+}
+
+function loginToFB() {
+  FB.login(function(response) {
         if (response.authResponse) {
           console.log('Welcome!  Fetching your information.... ');
           FB.api('/me', function(response) {
             console.log('Good to see you, ' + response.name + '.');
-            // createGraphObject(num);
           });
-
-          var accessToken = response.authResponse.accessToken;
-          $(element.parentNode).append("<input type='hidden' name='access_token' value='"+accessToken+"'/>");
-          element.parentNode.submit();
         } else {
           console.log('User cancelled login or did not fully authorize.');
         }
       }, {scope: 'email, publish_actions'});
-    }
-  });
 }
-
 </script>
 
 </head>
@@ -141,10 +129,21 @@ function postToFB(element) {
   window.fbAsyncInit = function() {
     FB.init({
       appId      : 479332218823511,                         // App ID
-      channelUrl : "<%= url_no_scheme('/channel.html') %>", // Channel File
+      channelUrl : "/channel.html", // Channel File
       status     : true,                                    // check login status
       cookie     : true,                                    // enable cookies to allow the server to access the session
       xfbml      : true                                     // parse XFBML
+    });
+
+    // Listen to the auth.login which will be called when the user logs in
+    // using the Login button
+    FB.Event.subscribe('auth.login', function(response) {
+      // We want to reload the page now so Ruby can read the cookie that the
+      // Javascript SDK sat. But we don't want to use
+      // window.location.reload() because if this is in a canvas there was a
+      // post made to this page and a reload will trigger a message to the
+      // user asking if they want to send data again.
+      window.location = window.location;
     });
   };
 
@@ -157,9 +156,6 @@ function postToFB(element) {
   }(document, 'script', 'facebook-jssdk'));
 
   </script>
-
-  <!-- <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1" data-scope="publish_actions">
-  </div> -->
 
   <div id="result-fb"></div>
 
