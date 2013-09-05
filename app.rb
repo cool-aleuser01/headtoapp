@@ -101,10 +101,14 @@ get "/postAction/:location_id" do
       :venue => object_url,
       :expires_in => 4*60*60 )
       #:end_time => (Time.now + 2*3600).iso8601 )
-    redirect "/"
+    redirect "/success"
   rescue => @e
     erb :exception
   end
+end
+
+get '/success' do
+  "Posted to FB successfully!"
 end
 
 get "/channel.html" do
