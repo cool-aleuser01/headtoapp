@@ -86,11 +86,11 @@ end
 
 # define object places to retrieve data from foursquare
 get "/object/:location_id" do
-
+  begin
   client = Foursquare2::Client.new(:client_id => ENV['FS_ID'], :client_secret => ENV['FS_SECRET'])
-  @location = client.venue(params[:location_id]); 
-  
+  @location = client.venue(params[:location_id]);
   erb :location
+  end
 end
 
 get "/postAction/:location_id" do
@@ -129,4 +129,21 @@ end
 get '/auth/facebook/callback' do
   session[:access_token] = authenticator.get_access_token(params[:code])
   redirect '/'
+end
+
+get '/api/foursquare/venues' do  
+  begin
+    foursquare_client = Foursquare2::Client.new(:client_id => ENV['FS_ID'], :client_secret => ENV['FS_SECRET'])
+    if (not request['ll']) or (request['ll'] == "")
+      warn "ll was empty"
+      @r1 = foursquare_client.search_venues(:intent => 'global', :query => request['query'], :limit => 5)
+    else
+      @r1 = foursquare_client.search_venues(:ll => request['ll'], :query => request['query'], :limit => 5)
+    end
+    #@r1 = foursquare_client.search_venues(:ll => '36.142064,-86.816086', :query => 'Starbucks', :limit => 5)
+    @venues = @r1.groups[0].items
+    erb :venues
+  rescue  => e
+    warn e.message
+  end
 end

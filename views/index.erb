@@ -13,64 +13,20 @@
 <link href="stylesheets/headto.css" rel="stylesheet">
 
 <script type="application/javascript" src="javascripts/microajax.js"></script>
-<script type="application/javascript" src="javascripts/jquery-1.7.1.min.js"></script>
-
+  
 <script type="application/javascript">
 
 var my_coord = "";
-var venue_results;
 
 function getIP(res) {
     my_coord = res.loc;
     //document.getElementById("my_location").innerHTML = "<img src='https://maps.googleapis.com/maps/api/staticmap?center=" + my_coord + "&zoom=15&size=640x200&sensor=false'></img>"
 }
 
-function category(objectty) {
-  if(objectty.length)
-    return objectty[0].name;
-  else
-    return "";
-}
 function hitFoursquareAPI(query) {
-
-  var locationParameter;
-  if (my_coord == "") {
-    locationParameter = "intent=global";
-  } else {
-    locationParameter = "ll=" + my_coord;
-  };
-
-  microAjax("https://api.foursquare.com/v2/venues/search?" +
-    "client_id=EBA5MTZIPRVHNGKU2RB4KZ45J2BAOZFSYIXHGYBGR1KIXFIQ&"+
-    "client_secret=K0CBX5TQKHNEB35MGT3NNIVLWP0C4L0CQQ4UP3C2LUSLQL0W&"+
-    "query=" + query + "&"+
-    "v=20130725&"+
-    "limit=5&" + locationParameter, function (res) {
-      venue_results = eval ("(" + res + ")");
-      var insert_string = "<table class='table table-striped'>";
-      venue_results.response.venues.forEach( function(venue) {
-
-        post_location = venue.canonicalUrl;
-        insert_string += "<tr>";
-
-        insert_string += "<td><img src='//maps.googleapis.com/maps/api/staticmap?center=";
-        insert_string += venue.location.lat + "," + venue.location.lng;
-        insert_string += "&markers=color:blue%7C" + venue.location.lat + "," + venue.location.lng;
-        insert_string += "&zoom=15&size=300x100&sensor=false'></td>";
-
-        insert_string += "<td><b><a href='" + venue.canonicalUrl + "'>" + venue.name;
-        insert_string += "</a></b><br>" + category(venue.categories) + "<br>";
-        insert_string += venue.location.address + ", " + venue.location.city + ".";
-
-        insert_string += "<br><br><br>";
-
-        insert_string += showFBLoginButton(venue.id);
-
-        insert_string += "</td></tr>";                 
-      });
-      insert_string += "</table>";
-      document.getElementById("result").innerHTML = insert_string;
-    });
+  microAjax("/api/foursquare/venues?query=" + query + "&ll=" + my_coord, function (res) {
+    document.getElementById("result").innerHTML = res;
+  });
 }
 
 </script>
