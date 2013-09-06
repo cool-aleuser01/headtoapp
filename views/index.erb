@@ -13,10 +13,12 @@
 <link href="stylesheets/headto.css" rel="stylesheet">
 
 <script type="application/javascript" src="javascripts/microajax.js"></script>
+<script type="application/javascript" src="javascripts/move.min.js"></script>
   
 <script type="application/javascript">
 
 var my_coord = "";
+var fill_in = "";
 
 function getIP(res) {
     my_coord = res.loc;
@@ -25,14 +27,23 @@ function getIP(res) {
 
 function hitFoursquareAPI(query) {
   microAjax("/api/foursquare/venues?query=" + query + "&ll=" + my_coord, function (res) {
-    document.getElementById("result").innerHTML = res;
+
+    fill_in = res;
+    move('#result')
+      .scale(0)
+      .duration(100)
+      .end(function() {
+        document.getElementById("result").innerHTML = fill_in;  
+        move('#result')
+          .scale(1)
+          .duration(300)
+          .end();
+      });
   });
 }
 
 </script>
 <script>
-
-
 
 function showFBLoginButton(venue_id) {
 
@@ -132,7 +143,7 @@ function loginToFB() {
       <br><br>
 
       <div id="my_location" style="position: relative"></div>
-      <span id="result"></span>
+      <div id="result"></div>
 
     </div>
 

@@ -1,9 +1,9 @@
 <table class='table table-hover'>
   <% for @venue in @venues %>
-    <tr style="margin: 2px;">
+    <tr>
       <td>
 
-        <% # Dirty code to offset the markers to the left %>
+        <% # Dirty code to offset the markers to the right %>
         <% shifted_longitude = @venue.location.lng.to_f %>
         <% shifted_longitude = shifted_longitude - 0.015 %>
         <% shifted_longitude = shifted_longitude.to_s %>
