@@ -1,9 +1,20 @@
-source :gemcutter
+source 'https://rubygems.org'
 
-gem "sinatra"
-gem "koala"
+# Ruby Essentials
 gem "json"
 gem "httparty"
-gem "unicorn"
-gem "rack"
+
+# Web Framework
+gem "sinatra"
+
+# Foursquare API
 gem "foursquare2"
+
+# Facebook API
+gem "koala"
+
+# Web Server
+gem "unicorn"
+
+# Ruby Rack
+gem "rack"
