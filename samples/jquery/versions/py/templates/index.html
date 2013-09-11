@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Headto: Tell your friends where you are heading</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tell your friends where you are heading.">
+    <meta name="keywords" content="ip, ip address, geolocation, hostname, my ip, address, ip geo">
+    
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+      
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 640px;
+      }
+      
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        margin: 0 auto;
+        text-align: center;
+      }
+      
+      .jumbotron h1 {
+        font-size: 6em;
+        line-height: 1;
+        margin-bottom: 20px;
+      }
+      
+      form { padding: 5px 0; }
+      
+      .jumbotron img { margin-bottom: 35px; }
+      h3 { font-size: 1.5em; }
+      .footer h3 { padding: 0; margin: 0; }
+      
+      @media screen and (max-width: 500px) {
+        .jumbotron h1 {
+          font-size: 2.5em;
+        }
+        input[type="text"] {
+          width: 60%;
+        }
+      }
+      
+    </style>    
+  </head>
+  <body>
+    
+    <div class="container-narrow">
+      
+      <div class="masthead">
+        <div class="pull-right">
+          <br><p class="muted">Tell your friends where you are heading.</p>
+        </div>
+        <h1 class="muted">&#10548; Headto</h1>
+      </div>
+      <hr>
+      
+      <div class="jumbotron">
+        
+        <form name="search" action="/" method="get">
+          <br><br>
+          <input type="text" name="query" placeholder="Where are you heading today?" style="font-size: 1.5em; height: 20px; width: 60%; padding: 10px;"/>
+          <br>
+          <input type="submit" value="Search" class="btn"/>
+        </form>
+        
+        {% if venues_list %}      
+        <table class="table table-striped">
+          {% for venue in venues_list %}
+          <tr>
+            <td><img src="http://maps.googleapis.com/maps/api/staticmap?center={{ venue.lat }},{{ venue.lng }}&zoom=15&size=200x200&sensor=false"></td>
+            <td><b>{{ venue.name }}</b> at {{ venue.city }},{{ venue.country }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% endif %} 
+        
+      </div>
+      
+      <div class="footer">
+        <hr/>
+        <h3 class="muted pull-right">&#10548; Headto</h3>
+        <ul class="nav nav-pills">
+          <li><a href="/headto">Home</a></li>
+          <li><a href="http://twitter.com/anvaysrivastava">@anvaysrivastava</a></li>
+          <li><a href="http://twitter.com/chetan1507">@chetan1507</a></li> 
+          <li><a href="http://twitter.com/paramaggarwal">@paramaggarwal</a></li>  
+        </ul>
+      </div>
+      
+    </div>
+    
+  </html>
+  
