@@ -1,0 +1,206 @@
+<html>
+<head>
+<title>Headto</title>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+p {
+  margin: 0 0 10px 0;
+}
+
+.title {
+  margin: 20px 0 0 0;
+  font-size: 64px;
+}
+
+.title a {
+  text-decoration: none;
+}
+
+.search {
+  position: relative;
+  *z-index: 1;
+  margin: 50px 0;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  transition: display 2s;
+  -webkit-transition: display 2s; /* Safari */
+  text-align: left;
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.search .tt-suggestion {
+  padding: 8px 20px;
+}
+
+.search .tt-suggestion + .tt-suggestion {
+  border-top: 1px solid #ccc;
+}
+
+.search .venue-icon {
+  width: 50px;
+  float: left;
+}
+
+.search .venue-name {
+  padding: 0 63px;
+  font-weight: bold;
+}
+
+.search .venue-address {
+  padding: 0 63px;
+  font-size: 14px;
+}
+
+
+.tt-dropdown-menu {
+  width: 100%;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0 0 5px 5px;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 396px;
+  height: 30px;
+  padding: 20px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+</style>
+<style>
+
+.loading {
+    position: absolute;
+    top: 12px;
+	left: 360px;	
+	width: 20px;
+	height: 20px;
+	border-style: solid;
+	border-radius: 20px;				
+	border-width: 5px;
+    border-color: green white green white;
+	-webkit-animation: revolve 1s linear infinite; 
+	-moz-animation: revolve 1s linear infinite;
+	animation: revolve 1s linear infinite; /* IE10+ */  
+}
+@-webkit-keyframes revolve  
+{  
+	from { -webkit-transform: rotate(0deg); }  
+	50%  { -webkit-transform: rotate(180deg); }  
+	to   { -webkit-transform: rotate(360deg); }  
+}
+@-moz-keyframes revolve  
+{  
+	from { -moz-transform: rotate(0deg); }  
+	50%  { -moz-transform: rotate(180deg); }  
+	to   { -moz-transform: rotate(360deg); }  
+}
+@keyframes revolve  /* IE10+ */
+{  
+	from { transform: rotate(0deg); }  
+	50%  { transform: rotate(180deg); }  
+	to   { transform: rotate(360deg); }  
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+<h1 class="title"><a href="/">Headto</a></h1>
+<p>Tell your friends where you are heading.</p>
+
+<div class="search">
+  <input class="typeahead" type="text" placeholder="Where are you heading?"><span id="loader"></span>
+
+</div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+<script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.js"></script>
+
+<script>
+var foursquareURL = "https://api.foursquare.com/v2/venues/suggestcompletion?" + "client_id=EBA5MTZIPRVHNGKU2RB4KZ45J2BAOZFSYIXHGYBGR1KIXFIQ&" + "client_secret=K0CBX5TQKHNEB35MGT3NNIVLWP0C4L0CQQ4UP3C2LUSLQL0W&" + "v=20130725&" + "limit=10&" + "near=Bangalore&" + "query=%QUERY";
+ 
+function parseFoursquareResponse(res) {
+  $('#loader').removeClass('loading');
+  console.log(res.response.minivenues);
+  return res.response.minivenues;
+};
+
+$(document).ready(function() {
+  $('.typeahead').typeahead({
+    name: 'headtoapp-search',
+    valueKey: 'name',
+    remote: {
+      url: foursquareURL,
+      filter: parseFoursquareResponse,
+      cache: true,
+      beforeSend: function () {
+        $('#loader').addClass('loading');
+      }
+    },
+    template: [
+      '<div class="venue-icon"><img src="{{categories.0.icon.prefix}}bg_44{{categories.0.icon.suffix}}" /></div>',
+      '<div class="venue-name">{{name}}</div>',
+      '<div class="venue-address">{{location.address}}<br>{{location.crossStreet}}</div>',
+      ].join(''),
+    engine: Hogan
+  });
+
+  $(document).on("typeahead:selected", function(e, loc) {
+    if(window.history)
+      window.history.pushState(loc, null, "/venue/" + loc.id);
+    document.title = "Headto - " + loc.name;
+  });
+
+  window.addEventListener("popstate", function(e) {
+    if(e.state) {
+      document.title = "Headto - " + e.state.name;
+      $("input.typeahead").val(e.state.name);
+      console.log(e.state);
+    }
+  });
+
+
+});
+
+</script>
+</body>
+</html>
