@@ -147,7 +147,9 @@ p {
 
 <div class="search">
   <input class="typeahead" type="text" placeholder="Where are you heading?"><span id="loader"></span>
+</div>
 
+<div class="result">
 </div>
 </div>
 
@@ -163,6 +165,32 @@ function parseFoursquareResponse(res) {
   console.log(res.response.minivenues);
   return res.response.minivenues;
 };
+
+function renderContent(loc) {
+
+  document.title = "Headto - " + loc.name;
+
+  //address: "2 Church St."
+  //city: "Bengaluru"
+  //country: "India"
+  //crossStreet: ""
+  //lat: 12.974386636007539
+  //lng: 77.60735750198364
+  //postalCode: "560001"
+  //state: "Karnataka"
+
+  var result = "";
+  result += '<div>';
+  result += '<strong>' + loc.categories[0].name + '</strong>';
+  result += '<p>' + loc.location.address + ', ' + loc.location.city + '.</p>';
+  result += '<p><a class="btn btn-lg btn-primary">I\'m heading here</a></p>';
+  result += '</div>';
+  result += '<img src="//a.tiles.mapbox.com/v3/paramaggarwal.map-mkz04dpf/pin-m-star';
+  result += '(' + loc.location.lng + ',' + loc.location.lat + ')';
+  result += '/' + loc.location.lng + ',' + loc.location.lat + ',14/400x200.png">';
+
+  $(".result").html(result);
+}
 
 $(document).ready(function() {
   $('.typeahead').typeahead({
@@ -185,16 +213,19 @@ $(document).ready(function() {
   });
 
   $(document).on("typeahead:selected", function(e, loc) {
-    if(window.history)
-      window.history.pushState(loc, null, "/venue/" + loc.id);
-    document.title = "Headto - " + loc.name;
+    var locationSuffix = "/venue/" + loc.id;
+
+    //Push only if already not on same page to avoid redundancy
+    if(window.location.href.indexOf(locationSuffix) == -1)
+      window.history.pushState(loc, null, locationSuffix);
+
+    renderContent(loc);
   });
 
   window.addEventListener("popstate", function(e) {
     if(e.state) {
-      document.title = "Headto - " + e.state.name;
+      renderContent(e.state);
       $("input.typeahead").val(e.state.name);
-      console.log(e.state);
     }
   });
 
