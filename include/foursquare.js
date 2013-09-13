@@ -18,7 +18,6 @@ foursquare.getVenue = function (id, response) {
 
     res.on('end', function() {
         var venueObject = JSON.parse(body).response;
-        console.log(JSON.stringify(venueObject));
         response.render('venue', venueObject);
     });
 
