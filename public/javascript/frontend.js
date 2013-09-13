@@ -84,7 +84,7 @@ function postHeadto(venueID) {
 }
 
 function postGraphAction(venueID) {
-  var venueURL = "/venue/" + venueID;
+  var venueURL = window.location.protocol + "//" + window.location.hostname + "/venue/" + venueID;
 
   FB.api(
     'me/headtoapp:head_to',
