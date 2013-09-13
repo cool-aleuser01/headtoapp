@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "express": "latest",
-    "hjs": "latest"
+    "hjs": "latest",
+    "nodetime": "latest"
   }
 }
