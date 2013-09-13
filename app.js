@@ -1,5 +1,4 @@
 var express = require('express');
-var https = require('https');
 var config = require('./include/config')
 var foursquare = require('./include/foursquare')
 
