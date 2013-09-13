@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# headtoapp: http://ogp.me/ns/fb/headtoapp#">
+  	<meta property="fb:app_id"                content="479332218823511" /> 
+  	<meta property="og:type"                  content="headtoapp:venue" /> 
+  	<meta property="og:url"                   content="https://headtoapp.herokuapp.com/object/{{ venue.id }}" /> 
+  	<meta property="og:title"                 content="{{ venue.name }}" /> 
+  	<meta property="og:image"                 content="{{ venue.photos.groups.0.items.0.prefix }}cap300{{ venue.photos.groups.0.items.0.suffix }}" /> 
+  	<meta property="place:location:latitude"  content="{{ venue.location.lat }}" /> 
+  	<meta property="place:location:longitude" content="{{ venue.location.lng }}" /> 
+  </head>
+  <body>
+  	{{ venue.name }} <br>
+  	{{ venue.id }}<br>
+    {{# venue.photos.groups.0.items }}
+    <img src="{{ prefix }}cap100{{ suffix }}"/>
+    {{/ venue.photos.groups.0.items }}
+  </body>
+</html>

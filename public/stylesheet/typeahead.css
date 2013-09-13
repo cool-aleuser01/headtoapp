@@ -1,0 +1,96 @@
+p {
+  margin: 0 0 10px 0;
+}
+
+.title {
+  margin: 20px 0 0 0;
+  font-size: 64px;
+}
+
+.title a {
+  text-decoration: none;
+}
+
+.search {
+  position: relative;
+  *z-index: 1;
+  margin: 50px 0;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  transition: display 2s;
+  -webkit-transition: display 2s; /* Safari */
+  text-align: left;
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.search .tt-suggestion {
+  padding: 8px 20px;
+}
+
+.search .tt-suggestion + .tt-suggestion {
+  border-top: 1px solid #ccc;
+}
+
+.search .venue-icon {
+  width: 50px;
+  float: left;
+}
+
+.search .venue-name {
+  padding: 0 63px;
+  font-weight: bold;
+}
+
+.search .venue-address {
+  padding: 0 63px;
+  font-size: 14px;
+}
+
+
+.tt-dropdown-menu {
+  width: 100%;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0 0 5px 5px;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 396px;
+  height: 30px;
+  padding: 20px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}

@@ -1,0 +1,52 @@
+<html>
+<head>
+<title>Headto</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="/stylesheet/typeahead.css" rel="stylesheet">
+<link href="/stylesheet/loader.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : 479332218823511,        // App ID
+      status     : true,           // check login status
+      cookie     : true,           // enable cookies to allow the server to access the session
+      xfbml      : false            // parse page for xfbml or html5 social plugins like login button below
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));
+
+</script>
+
+<div class="container text-center">
+<h1 class="title"><a href="/">Headto</a></h1>
+<p>Tell your friends where you are heading.</p>
+
+<div class="search">
+  <input class="typeahead" type="text" placeholder="Where are you heading?"><span id="loader"></span>
+</div>
+
+<div class="result">
+</div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+<script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.js"></script>
+<script src="/javascript/frontend.js"></script>
+</body>
+</html>
