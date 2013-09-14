@@ -38,7 +38,7 @@ function renderContent(loc) {
 }
 
 function postHeadto(venueID) {
-  ~
+ 
   FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
         // the user is logged in and has authenticated your
