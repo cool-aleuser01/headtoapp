@@ -35,7 +35,7 @@
 
 </script>
 
-<div class="container text-center">
+<div class="col-md-offset-4 col-md-4 text-center">
   <h1 class="title"><a href="/">Headto</a></h1>
   <p>Tell your friends where you are heading.</p>
 
