@@ -2,6 +2,8 @@
 
 Tell your friends where you are heading.
 
+Check it out - http://headto.in
+
 ## What is this?
 
 Checking in after reaching a venue does not help anyone. How about checking in before hand so others can make it too?
@@ -19,9 +21,9 @@ _That's_ Headto.
 
 ## The Team
 
-* Anvay Srivastava (iOS App)
-* Chetan Agrawal (Back-end)
-* Param Aggarwal (Front-end)
+* Anvay Srivastava
+* Chetan Agrawal
+* Param Aggarwal
 
 Started as a weekend hack on 28th July 2013 at Bangalore, India  
 
@@ -29,4 +31,3 @@ Started as a weekend hack on 28th July 2013 at Bangalore, India
  
 * Facebook OpenGraph API
 * Foursquare Venues API
-* Google Static Maps API
