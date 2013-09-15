@@ -7,11 +7,17 @@
 <meta property="og:type"                  content="headtoapp:venue" /> 
 <meta property="og:url"                   content="http://www.headto.in/venue/{{ venue.id }}" /> 
 <meta property="og:title"                 content="{{ venue.name }}" /> 
-<meta property="og:image"                 content="{{ venue.photos.groups.0.items.0.prefix }}cap300{{ venue.photos.groups.0.items.0.suffix }}" /> 
+<meta property="og:image"                 content="
+{{#venue.photos.groups.0.items.0}}
+  {{ venue.photos.groups.0.items.0.prefix }}cap300{{ venue.photos.groups.0.items.0.suffix }}
+{{/venue.photos.groups.0.items.0}}
+{{^venue.photos.groups.0.items.0}}
+  {{venue.categories.0.icon.prefix}}bg_44{{venue.categories.0.icon.suffix}}
+{{/venue.photos.groups.0.items.0}}
+" /> 
 <meta property="place:location:latitude"  content="{{ venue.location.lat }}" /> 
 <meta property="place:location:longitude" content="{{ venue.location.lng }}" /> 
 {{/yield-meta}}
-
 
 <div class="row result">
     <strong>{{ venue.categories.0.name }}</strong>
