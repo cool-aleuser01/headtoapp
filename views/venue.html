@@ -1,0 +1,18 @@
+{{# yield-title }}
+  <title>Headto - {{ venue.name }}</title>
+{{/ yield-title }}
+
+<div class="row result">
+    <strong>{{ venue.categories.0.name }}</strong>
+    <p>{{ venue.location.address }}, {{ venue.location.city }}.</p>
+    <p><a class="btn btn-lg btn-primary" id="postHeadto">I'm heading here</a></p>
+</div>
+
+<div class="row">
+  <p><img src="//a.tiles.mapbox.com/v3/paramaggarwal.map-mkz04dpf/pin-m-star({{ venue.location.lng }},{{ venue.location.lat }})/{{ venue.location.lng }},{{ venue.location.lat }},14/400x200.png" /></p>
+
+  <!--<p> {{# venue.photos.groups.0.items }}
+    <img src="{{ prefix }}cap100{{ suffix }}"/>
+  {{/ venue.photos.groups.0.items }} </p>-->
+
+</div>

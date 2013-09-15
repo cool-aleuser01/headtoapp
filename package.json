@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "express": "latest",
-    "hjs": "latest",
+    "hogan-express": "latest",
     "nodetime": "latest"
   }
 }

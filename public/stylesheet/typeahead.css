@@ -1,10 +1,11 @@
-p {
-  margin: 0 0 10px 0;
+/*
+div {
+  border: 1px dotted #ccc;
 }
+*/
 
-.title {
-  margin: 20px 0 0 0;
-  font-size: 64px;
+.title h1 {
+  font-size: 5em;
 }
 
 .title a {
@@ -12,9 +13,26 @@ p {
 }
 
 .search {
+  margin: 20px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
-  *z-index: 1;
-  margin: 50px 0;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 100%;
+  height: 2em;
+  padding: 1em;
+  font-size: 2em;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .typeahead {
@@ -22,12 +40,10 @@ p {
 }
 
 .tt-hint {
-  color: #999
+  color: #999;
 }
 
 .tt-dropdown-menu {
-  transition: display 2s;
-  -webkit-transition: display 2s; /* Safari */
   text-align: left;
 }
 
@@ -69,7 +85,6 @@ p {
   font-size: 14px;
 }
 
-
 .tt-dropdown-menu {
   width: 100%;
   padding: 0;
@@ -80,17 +95,4 @@ p {
 
 .typeahead:focus {
   border: 2px solid #0097cf;
-}
-
-.typeahead,
-.tt-query,
-.tt-hint {
-  width: 396px;
-  height: 30px;
-  padding: 20px;
-  font-size: 24px;
-  line-height: 30px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  outline: none;
 }
