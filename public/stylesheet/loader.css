@@ -31,3 +31,8 @@
   50%  { transform: rotate(180deg); }  
   to   { transform: rotate(360deg); }  
 }
+
+.footer {
+	position: fixed;
+	bottom: 0;
+}
