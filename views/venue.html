@@ -1,6 +1,17 @@
-{{# yield-title }}
+{{#yield-title}}
   <title>Headto - {{ venue.name }}</title>
-{{/ yield-title }}
+{{/yield-title}}
+
+{{#yield-meta}}
+<meta property="fb:app_id"                content="479332218823511" /> 
+<meta property="og:type"                  content="headtoapp:venue" /> 
+<meta property="og:url"                   content="http://www.headto.in/venue/{{ venue.id }}" /> 
+<meta property="og:title"                 content="{{ venue.name }}" /> 
+<meta property="og:image"                 content="{{ venue.photos.groups.0.items.0.prefix }}cap300{{ venue.photos.groups.0.items.0.suffix }}" /> 
+<meta property="place:location:latitude"  content="{{ venue.location.lat }}" /> 
+<meta property="place:location:longitude" content="{{ venue.location.lng }}" /> 
+{{/yield-meta}}
+
 
 <div class="row result">
     <strong>{{ venue.categories.0.name }}</strong>
