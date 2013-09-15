@@ -1,5 +1,5 @@
-var foursquareURL = "https://api.foursquare.com/v2/venues/suggestcompletion?" + "client_id=EBA5MTZIPRVHNGKU2RB4KZ45J2BAOZFSYIXHGYBGR1KIXFIQ&" + "client_secret=K0CBX5TQKHNEB35MGT3NNIVLWP0C4L0CQQ4UP3C2LUSLQL0W&" + "v=20130725&" + "limit=10&" + "near=Bangalore&" + "query=%QUERY";
- 
+var foursquareURL = "https://api.foursquare.com/v2/venues/suggestcompletion?" + "client_id=EBA5MTZIPRVHNGKU2RB4KZ45J2BAOZFSYIXHGYBGR1KIXFIQ&" + "client_secret=K0CBX5TQKHNEB35MGT3NNIVLWP0C4L0CQQ4UP3C2LUSLQL0W&" + "v=20130725&" + "limit=10&" + "near=India&" + "query=%QUERY";
+
 function parseFoursquareResponse(res) {
   $('#loader').removeClass('loading');
   console.log(res.response.minivenues);
@@ -105,7 +105,7 @@ function postGraphAction(venueID) {
    });
 }
 
-$(document).ready(function() {
+function initTypeahead() {
   $('.typeahead').typeahead({
     name: 'headtoapp-search',
     valueKey: 'name',
@@ -124,6 +124,9 @@ $(document).ready(function() {
       ].join(''),
     engine: Hogan
   });
+}
+
+$(document).ready(function() {
 
   $(document).on("typeahead:selected", function(e, loc) {
     var locationSuffix = "/venue/" + loc.id;
@@ -141,5 +144,25 @@ $(document).ready(function() {
       $("input.typeahead").val(e.state.name);
     }
   });
+
+$.ajax({
+   type: 'GET',
+    url: 'http://ipinfo.io/?callback=getIP',
+    async: false,
+    jsonpCallback: 'getIP',
+    contentType: "application/json",
+    dataType: 'jsonp',
+    success: function(json) {
+       console.log("Oh, you are in " + json.city);
+       foursquareURL = foursquareURL.replace('India', json.city);
+       initTypeahead();
+    },
+    error: function(e) {
+       console.log(e.message);
+    }
+});
+
+
+
 
 });
