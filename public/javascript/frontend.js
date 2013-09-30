@@ -91,7 +91,7 @@ function postGraphAction(venueID) {
     {
       venue: venueURL,
       expires_in : 4*60*60,
-      fb:explicitly_shared : true
+      'fb:explicitly_shared' : true
     },
     function(response) {
       if (!response) {
