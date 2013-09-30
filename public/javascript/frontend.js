@@ -90,7 +90,8 @@ function postGraphAction(venueID) {
     'post',
     {
       venue: venueURL,
-      expires_in : 4*60*60
+      expires_in : 4*60*60,
+      fb:explicitly_shared : true
     },
     function(response) {
       if (!response) {
